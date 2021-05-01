@@ -20,17 +20,17 @@ public interface MovementService {
             @PageableDefault(sort = "name", direction = ASC, size = 20) Pageable pag
     );
 
-    String deposits(
+    void deposits(
             @PathVariable String idenfifier,
             @Valid @RequestBody DepositAccountRequest request
     );
 
-    String transfer(
+    void transfer(
             @PathVariable String idenfifier,
             @Valid @RequestBody TransferAccountRequest request
     );
 
-    String payment(
+    void payment(
             @PathVariable String idenfifier,
             @Valid @RequestBody PaymentAccountRequest request
     );

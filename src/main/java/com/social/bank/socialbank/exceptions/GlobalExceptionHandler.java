@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,14 +43,10 @@ public class GlobalExceptionHandler {
             if (nonNull(error.getCodes()) && nonNull(error.getCodes()[STR_FIELD_NAME])) {
                 String fieldName = error.getCodes()[STR_FIELD_NAME];
 
-                StringBuilder messageDisplayed = new StringBuilder();
-                messageDisplayed.append("[");
-                messageDisplayed
-                        .append(fieldName.substring(fieldName.lastIndexOf(".") + IGNORE_DOT_POST).toUpperCase());
-                messageDisplayed.append("] - ");
-                messageDisplayed.append(error.getDefaultMessage());
-
-                validationErrors.add(new ErrorResponse(messageDisplayed.toString()));
+                validationErrors.add(new ErrorResponse("[" +
+                        fieldName.substring(fieldName.lastIndexOf(".") + IGNORE_DOT_POST).toUpperCase() +
+                        "] - " +
+                        error.getDefaultMessage()));
             }
         }
 

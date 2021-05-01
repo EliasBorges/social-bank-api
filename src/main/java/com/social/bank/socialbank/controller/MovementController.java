@@ -4,6 +4,7 @@ import com.social.bank.socialbank.controller.request.account.moves.DepositAccoun
 import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
 import com.social.bank.socialbank.controller.response.movement.ExtractAccountResponse;
+import com.social.bank.socialbank.service.MovementService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ import static org.springframework.http.HttpStatus.OK;
 public class MovementController {
     private static final Integer SIZE_MAX_PAGE = 100;
 
+    private final MovementService service;
+
     @ResponseStatus(OK)
     @GetMapping(value = "/{idenfifier}/extracts")
     public Page<ExtractAccountResponse> getExtract(
@@ -32,11 +35,11 @@ public class MovementController {
 
     @ResponseStatus(OK)
     @PutMapping(value = "/deposits/accounts/{idenfifier}")
-    public String deposits(
+    public void deposits(
             @PathVariable String idenfifier,
             @Valid @RequestBody DepositAccountRequest request
     ) {
-        return null;
+        service.deposits(idenfifier, request);
     }
 
     @ResponseStatus(OK)

@@ -5,16 +5,16 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class TransferAccountRequest {
-    @Min(value = 1, message = "{validation.value}")
-    private final Double amount;
+    @Positive(message = "{validation.value}")
+    private final Double value;
 
     @NotBlank(message = "{validation.blank}")
     private final String idenfifierAccountOrigin;

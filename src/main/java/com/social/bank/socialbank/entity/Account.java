@@ -3,6 +3,7 @@ package com.social.bank.socialbank.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
+import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
 import com.social.bank.socialbank.enums.Status;
 import com.social.bank.socialbank.repository.AccountRepository;
 import lombok.*;
@@ -68,5 +69,10 @@ public class Account {
         this.status = Status.CANCELED;
 
         repository.save(this);
+    }
+
+    public Double deposit(DepositAccountRequest request, AccountRepository repository) {
+        this.balance = this.balance + request.getValue();
+        return repository.save(this).balance;
     }
 }

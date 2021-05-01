@@ -1,6 +1,5 @@
 package com.social.bank.socialbank.controller.request.account;
 
-import com.social.bank.socialbank.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
