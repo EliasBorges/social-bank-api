@@ -63,4 +63,10 @@ public class Account {
 
         return repository.save(this).idenfifier;
     }
+
+    public void canceled(Account account, AccountRepository repository){
+        this.status = Status.CANCELED;
+
+        repository.save(this);
+    }
 }

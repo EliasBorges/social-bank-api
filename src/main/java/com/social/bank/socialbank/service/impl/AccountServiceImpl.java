@@ -1,11 +1,10 @@
 package com.social.bank.socialbank.service.impl;
 
-import static java.lang.String.format;
-
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
 import com.social.bank.socialbank.controller.response.account.BalenceAccountResponse;
 import com.social.bank.socialbank.entity.Account;
+import com.social.bank.socialbank.exceptions.BalanceNegativeException;
 import com.social.bank.socialbank.exceptions.DocumentAlreadyExistsException;
 import com.social.bank.socialbank.exceptions.NotFoundException;
 import com.social.bank.socialbank.repository.AccountRepository;
@@ -13,6 +12,8 @@ import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import static java.lang.String.format;
 
 @AllArgsConstructor
 @Service
@@ -67,8 +68,21 @@ public class AccountServiceImpl implements AccountService {
         return account.update(request, repository);
     }
 
-    @Override
     public void canceled(String idenfifier) {
+        Account account = repository.findById(idenfifier).orElseThrow(() -> {
+            log.error("Account not update status, idenfifier account = {} not found", idenfifier);
 
+            throw new NotFoundException(format("AccountServiceImpl: update status, idenfifier account = %s not found", idenfifier));
+        });
+
+        if(account.getBalance() < 0) {
+            log.error("Account not update status balance pending, idenfifier account = {}, balance {}", idenfifier, account.getBalance());
+
+            throw new BalanceNegativeException(format("AccountServiceImpl: update status, idenfifier account = %s balance pending", idenfifier));
+        }
+
+        log.info("Update status account, idenfifier = {}", idenfifier);
+
+        account.canceled(account, repository);
     }
 }

@@ -43,8 +43,8 @@ public class AccountController {
     }
 
     @ResponseStatus(OK)
-    @DeleteMapping(value = "/{idenfifier}")
+    @DeleteMapping(value = "/{idenfifier}/canceled")
     public void canceled(@PathVariable String idenfifier) {
-
+        service.canceled(idenfifier);
     }
 }

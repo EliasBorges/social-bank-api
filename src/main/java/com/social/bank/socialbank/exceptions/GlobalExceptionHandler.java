@@ -63,7 +63,15 @@ public class GlobalExceptionHandler {
     public @ResponseBody
     ErrorResponse handlerBusinessRules(DocumentAlreadyExistsException exception) {
         log.info(exception.getMessage());
-        return new ErrorResponse(env.getProperty("validation.document.already.exists"));
+        return new ErrorResponse(env.getProperty("validation.account.already.exists"));
+    }
+
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({BalanceNegativeException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(BalanceNegativeException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.account.balance.pending"));
     }
 
     @ResponseStatus(NOT_FOUND)
