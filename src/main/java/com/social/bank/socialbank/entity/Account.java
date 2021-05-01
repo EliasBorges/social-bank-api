@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
+import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
 import com.social.bank.socialbank.enums.Status;
 import com.social.bank.socialbank.repository.AccountRepository;
 import lombok.*;
@@ -71,8 +72,18 @@ public class Account {
         repository.save(this);
     }
 
-    public Double deposit(DepositAccountRequest request, AccountRepository repository) {
+    public void deposit(DepositAccountRequest request, AccountRepository repository) {
         this.balance = this.balance + request.getValue();
-        return repository.save(this).balance;
+        repository.save(this);
+    }
+
+    public void addBalance(Double value, AccountRepository repository) {
+        this.balance = this.balance + value;
+        repository.save(this);
+    }
+
+    public void removeBalance(Double value, AccountRepository repository) {
+        this.balance = this.balance - value;
+        repository.save(this);
     }
 }

@@ -5,6 +5,8 @@ import com.social.bank.socialbank.controller.request.account.moves.PaymentAccoun
 import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
 import com.social.bank.socialbank.controller.response.movement.ExtractAccountResponse;
 import com.social.bank.socialbank.entity.Account;
+import com.social.bank.socialbank.entity.Movement;
+import com.social.bank.socialbank.exceptions.InsufficienteFundsException;
 import com.social.bank.socialbank.exceptions.NotFoundException;
 import com.social.bank.socialbank.repository.AccountRepository;
 import com.social.bank.socialbank.repository.MovementRepository;
@@ -38,10 +40,35 @@ public class MovementServiceImpl implements MovementService {
         });
 
         account.deposit(request, accountRepository);
+
+        Movement.addMovementDeposit(request, repository, account);
     }
 
-    @Override
     public void transfer(String idenfifier, TransferAccountRequest request) {
+        Account accountOrign = accountRepository.findById(idenfifier).orElseThrow(() -> {
+            log.error("Unrealized transfer, idenfifier account orign = {} not found", idenfifier);
+
+            throw new NotFoundException(format("MovementServiceImpl: transfer, idenfifier account orign = %s not found", idenfifier));
+        });
+
+        Account accountDestiny = accountRepository.findById(request.getIdenfifierAccountDestiny()).orElseThrow(() -> {
+            log.error("Unrealized transfer, idenfifier account destiny = {} not found", idenfifier);
+
+            throw new NotFoundException(format("MovementServiceImpl: transfer, idenfifier account destiny = %s not found", idenfifier));
+        });
+
+        if (accountOrign.getBalance() <= request.getValue()) {
+            log.error("Unrealized transfer, idenfifier account destiny = {} insufficient funds", idenfifier);
+
+            throw new InsufficienteFundsException(
+                    format("MovementServiceImpl: transfer, idenfifier account destiny = %s insufficient funds", idenfifier));
+        }
+
+        accountOrign.removeBalance(request.getValue(), accountRepository);
+        Movement.addMovementTransfer(- request.getValue(), repository, accountOrign);
+
+        accountDestiny.addBalance(request.getValue(), accountRepository);
+        Movement.addMovementTransfer(request.getValue(), repository, accountDestiny);
     }
 
     @Override

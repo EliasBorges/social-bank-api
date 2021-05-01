@@ -76,4 +76,12 @@ public class GlobalExceptionHandler {
         log.info(exception.getMessage());
         return new ErrorResponse(env.getProperty("validation.not.found"));
     }
+
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({InsufficienteFundsException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(InsufficienteFundsException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("account.insufficiente.funds"));
+    }
 }

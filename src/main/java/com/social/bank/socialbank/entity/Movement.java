@@ -1,11 +1,15 @@
 package com.social.bank.socialbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
+import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
 import com.social.bank.socialbank.enums.Type;
+import com.social.bank.socialbank.repository.MovementRepository;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -27,12 +31,6 @@ public class Movement {
     @Column(nullable = false)
     private Double amount;
 
-    @Column(nullable = true, name = "idenfifier_account_origin")
-    private String idenfifierAccountOrigin;
-
-    @Column(nullable = true, name = "idenfifier_account_destiny")
-    private String idenfifierAccountDestiny;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Type type;
@@ -42,4 +40,32 @@ public class Movement {
     @JsonBackReference
     @ToString.Exclude
     private Account account;
+
+    public Movement(String idenfifier, LocalDate now, Double value, Type deposit, Account account) {
+        this.idenfifier = idenfifier;
+        this.date = now;
+        this.amount = value;
+        this.type = deposit;
+        this.account = account;
+    }
+
+    public static void addMovementDeposit(DepositAccountRequest request, MovementRepository repository, Account account){
+        repository.save(new Movement(
+                UUID.randomUUID().toString(),
+                LocalDate.now(),
+                request.getValue(),
+                Type.DEPOSIT,
+                account
+        ));
+    }
+
+    public static void addMovementTransfer(Double valueOperation, MovementRepository repository, Account account){
+        repository.save(new Movement(
+                UUID.randomUUID().toString(),
+                LocalDate.now(),
+                valueOperation,
+                Type.TRANSFER,
+                account
+        ));
+    }
 }

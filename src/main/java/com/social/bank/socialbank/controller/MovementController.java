@@ -44,19 +44,18 @@ public class MovementController {
 
     @ResponseStatus(OK)
     @PutMapping(value = "transfers/accounts/{idenfifier}")
-    public String transfer(
+    public void transfer(
             @PathVariable String idenfifier,
             @Valid @RequestBody TransferAccountRequest request
     ) {
-        return null;
+        service.transfer(idenfifier, request);
     }
 
     @ResponseStatus(OK)
     @PutMapping(value = "payments/accounts/{idenfifier}")
-    public String payment(
+    public void payment(
             @PathVariable String idenfifier,
             @Valid @RequestBody PaymentAccountRequest request
     ) {
-        return null;
     }
 }

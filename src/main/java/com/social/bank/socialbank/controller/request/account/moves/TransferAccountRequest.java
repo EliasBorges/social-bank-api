@@ -17,8 +17,5 @@ public class TransferAccountRequest {
     private final Double value;
 
     @NotBlank(message = "{validation.blank}")
-    private final String idenfifierAccountOrigin;
-
-    @NotBlank(message = "{validation.blank}")
     private final String idenfifierAccountDestiny;
 }
