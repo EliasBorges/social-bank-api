@@ -5,9 +5,9 @@ import com.social.bank.socialbank.controller.request.account.UpdateAccountReques
 import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
-import com.social.bank.socialbank.controller.response.account.AccountResponse;
 import com.social.bank.socialbank.controller.response.account.ExtractAccountResponse;
 import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
+import com.social.bank.socialbank.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +21,7 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 public interface AccountService {
     void create(@Valid @RequestBody CreateAccountRequest request);
 
-    AccountResponse getAccount(@PathVariable String idenfifier);
+    Account getAccount(@PathVariable String idenfifier);
 
     SaleAccountResponse getSale(@PathVariable String idenfifier);
 

@@ -19,6 +19,7 @@ import java.util.List;
 import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
 @Slf4j
@@ -63,5 +64,13 @@ public class GlobalExceptionHandler {
     ErrorResponse handlerBusinessRules(DocumentAlreadyExistsException exception) {
         log.info(exception.getMessage());
         return new ErrorResponse(env.getProperty("validation.document.already.exists"));
+    }
+
+    @ResponseStatus(NOT_FOUND)
+    @ExceptionHandler({NotFoundException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(NotFoundException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.not.found"));
     }
 }

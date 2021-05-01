@@ -7,9 +7,9 @@ import com.social.bank.socialbank.controller.request.account.*;
 import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
-import com.social.bank.socialbank.controller.response.account.AccountResponse;
 import com.social.bank.socialbank.controller.response.account.ExtractAccountResponse;
 import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
+import com.social.bank.socialbank.entity.Account;
 import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,14 +29,12 @@ public class AccountController {
 
     @ResponseStatus(CREATED)
     @PostMapping
-    public void create(@Valid @RequestBody CreateAccountRequest request) {
-        service.create(request);
-    }
+    public void create(@Valid @RequestBody CreateAccountRequest request) { service.create(request); }
 
     @ResponseStatus(OK)
     @GetMapping(value = "/{idenfifier}")
-    public AccountResponse getAccount(@PathVariable String idenfifier) {
-        return new AccountResponse();
+    public Account getAccount(@PathVariable String idenfifier) {
+        return service.getAccount(idenfifier);
     }
 
     @ResponseStatus(OK)

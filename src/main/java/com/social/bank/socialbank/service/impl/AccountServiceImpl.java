@@ -7,11 +7,11 @@ import com.social.bank.socialbank.controller.request.account.UpdateAccountReques
 import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
-import com.social.bank.socialbank.controller.response.account.AccountResponse;
 import com.social.bank.socialbank.controller.response.account.ExtractAccountResponse;
 import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
 import com.social.bank.socialbank.entity.Account;
 import com.social.bank.socialbank.exceptions.DocumentAlreadyExistsException;
+import com.social.bank.socialbank.exceptions.NotFoundException;
 import com.social.bank.socialbank.repository.AccountRepository;
 import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
@@ -40,9 +40,13 @@ public class AccountServiceImpl implements AccountService {
         Account.create(request, repository);
     }
 
-    @Override
-    public AccountResponse getAccount(String idenfifier) {
-        return null;
+    public Account getAccount(String idenfifier) {
+        return repository.findById(idenfifier).orElseThrow(() -> {
+            log.error("Account not found, idenfifier customer = {} not found", idenfifier);
+
+            throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier customer = %s not found",
+                    idenfifier));
+        });
     }
 
     @Override
