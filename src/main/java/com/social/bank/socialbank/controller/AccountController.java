@@ -3,7 +3,7 @@ package com.social.bank.socialbank.controller;
 import static org.springframework.http.HttpStatus.*;
 
 import com.social.bank.socialbank.controller.request.account.*;
-import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
+import com.social.bank.socialbank.controller.response.account.BalenceAccountResponse;
 import com.social.bank.socialbank.entity.Account;
 import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
@@ -28,9 +28,9 @@ public class AccountController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping(value = "/{idenfifier}/sales")
-    public SaleAccountResponse getSale(@PathVariable String idenfifier) {
-        return service.getSale(idenfifier);
+    @GetMapping(value = "/{idenfifier}/balances")
+    public BalenceAccountResponse getBalance(@PathVariable String idenfifier) {
+        return service.getBalance(idenfifier);
     }
 
     @ResponseStatus(OK)
@@ -39,7 +39,7 @@ public class AccountController {
             @PathVariable String idenfifier,
             @Valid @RequestBody UpdateAccountRequest request
     ) {
-        return null;
+        return service.update(idenfifier, request).concat(" atualizada com sucesso!");
     }
 
     @ResponseStatus(OK)

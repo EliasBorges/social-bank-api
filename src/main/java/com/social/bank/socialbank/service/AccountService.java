@@ -2,7 +2,7 @@ package com.social.bank.socialbank.service;
 
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
-import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
+import com.social.bank.socialbank.controller.response.account.BalenceAccountResponse;
 import com.social.bank.socialbank.entity.Account;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +14,7 @@ public interface AccountService {
 
     Account getAccount(@PathVariable String idenfifier);
 
-    SaleAccountResponse getSale(@PathVariable String idenfifier);
+    BalenceAccountResponse getBalance(@PathVariable String idenfifier);
 
     String update(
             @PathVariable String idenfifier,

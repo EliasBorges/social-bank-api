@@ -18,7 +18,4 @@ public class UpdateAccountRequest {
 
     @NotBlank(message = "{validation.blank}")
     private final String description;
-
-    @NotBlank(message = "{validation.blank}")
-    private final Status status;
 }

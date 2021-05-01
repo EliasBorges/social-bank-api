@@ -2,6 +2,7 @@ package com.social.bank.socialbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
+import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
 import com.social.bank.socialbank.enums.Status;
 import com.social.bank.socialbank.repository.AccountRepository;
 import lombok.*;
@@ -54,5 +55,12 @@ public class Account {
                 0.0,
                 request.getStatus()
         ));
+    }
+
+    public String update(UpdateAccountRequest request, AccountRepository repository) {
+        this.name = request.getName();
+        this.description = request.getDescription();
+
+        return repository.save(this).idenfifier;
     }
 }

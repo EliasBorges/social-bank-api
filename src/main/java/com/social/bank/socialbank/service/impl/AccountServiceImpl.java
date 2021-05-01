@@ -4,7 +4,7 @@ import static java.lang.String.format;
 
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
-import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
+import com.social.bank.socialbank.controller.response.account.BalenceAccountResponse;
 import com.social.bank.socialbank.entity.Account;
 import com.social.bank.socialbank.exceptions.DocumentAlreadyExistsException;
 import com.social.bank.socialbank.exceptions.NotFoundException;
@@ -22,7 +22,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
 
     public void create(CreateAccountRequest request) {
-        if(repository.existsById(request.getIdenfifier())){
+        if (repository.existsById(request.getIdenfifier())) {
             log.error("Account not created, idenfifier account = {} register", request.getIdenfifier());
 
             throw new DocumentAlreadyExistsException(
@@ -36,26 +36,35 @@ public class AccountServiceImpl implements AccountService {
 
     public Account getAccount(String idenfifier) {
         return repository.findById(idenfifier).orElseThrow(() -> {
-            log.error("Account not found, idenfifier customer = {} not found", idenfifier);
+            log.error("Account not found, idenfifier account = {} not found", idenfifier);
 
-            throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier customer = %s not found",
+            throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier account = %s not found",
                     idenfifier));
         });
     }
 
-    @Override
-    public SaleAccountResponse getSale(String idenfifier) {
-        return new SaleAccountResponse(repository.findById(idenfifier).map(Account::getBalance).orElseThrow(() -> {
-            log.error("Account not found, idenfifier customer = {} not found", idenfifier);
+    public BalenceAccountResponse getBalance(String idenfifier) {
+        return new BalenceAccountResponse(repository.findById(idenfifier).map(Account::getBalance).orElseThrow(() -> {
+            log.error("Account not found, idenfifier account = {} not found", idenfifier);
 
-            throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier customer = %s not found",
+            throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier account = %s not found",
                     idenfifier));
         }));
     }
 
-    @Override
     public String update(String idenfifier, UpdateAccountRequest request) {
-        return null;
+        Account account = repository.findById(idenfifier).orElseThrow(() -> {
+            log.error("Account not update, idenfifier account = {} not found", idenfifier);
+
+            throw new NotFoundException(format("AccountServiceImpl: update, idenfifier account = %s not found", idenfifier));
+        });
+
+        log.info("Update account, idenfifier = {}, accountBefore = {}, accountAfter = {}",
+                idenfifier,
+                request,
+                account);
+
+        return account.update(request, repository);
     }
 
     @Override

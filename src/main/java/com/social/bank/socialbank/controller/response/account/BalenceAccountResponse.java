@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaleAccountResponse {
-    private Double amount;
+public class BalenceAccountResponse {
+    private Double balance;
 }
