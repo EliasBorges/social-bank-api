@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"idenfifier"})
 @ToString
-public class Moves {
+public class Movement {
     @Id
     @Column(updatable = false, unique = true, nullable = false)
     private String idenfifier;

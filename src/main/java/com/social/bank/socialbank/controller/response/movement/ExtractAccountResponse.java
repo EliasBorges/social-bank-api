@@ -1,6 +1,6 @@
-package com.social.bank.socialbank.controller.response.account;
+package com.social.bank.socialbank.controller.response.movement;
 
-import com.social.bank.socialbank.entity.Moves;
+import com.social.bank.socialbank.entity.Movement;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +13,6 @@ import java.util.List;
 public class ExtractAccountResponse {
     private String idenfifier;
     private String name;
-    private List<Moves> moveItemList;
+    private List<Movement> movementItemList;
     private Double balance;
 }

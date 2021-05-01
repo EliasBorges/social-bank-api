@@ -36,7 +36,7 @@ public class Account {
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @JsonManagedReference
     @ToString.Exclude
-    private List<Moves> moveItemList;
+    private List<Movement> movementItemList;
 
     public Account(String idenfifier, String name, String description, double balance, String status) {
         this.idenfifier = idenfifier;

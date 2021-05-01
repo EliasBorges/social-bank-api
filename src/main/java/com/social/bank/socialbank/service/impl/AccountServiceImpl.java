@@ -4,10 +4,6 @@ import static java.lang.String.format;
 
 import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.controller.request.account.UpdateAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
-import com.social.bank.socialbank.controller.response.account.ExtractAccountResponse;
 import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
 import com.social.bank.socialbank.entity.Account;
 import com.social.bank.socialbank.exceptions.DocumentAlreadyExistsException;
@@ -16,8 +12,6 @@ import com.social.bank.socialbank.repository.AccountRepository;
 import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -60,27 +54,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<ExtractAccountResponse> getExtract(String idenfifier, Pageable pag) {
-        return null;
-    }
-
-    @Override
     public String update(String idenfifier, UpdateAccountRequest request) {
-        return null;
-    }
-
-    @Override
-    public String deposits(String idenfifier, DepositAccountRequest request) {
-        return null;
-    }
-
-    @Override
-    public String transfer(String idenfifier, TransferAccountRequest request) {
-        return null;
-    }
-
-    @Override
-    public String payment(String idenfifier, PaymentAccountRequest request) {
         return null;
     }
 
