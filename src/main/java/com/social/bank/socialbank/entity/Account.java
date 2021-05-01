@@ -1,7 +1,9 @@
 package com.social.bank.socialbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.social.bank.socialbank.controller.request.account.CreateAccountRequest;
 import com.social.bank.socialbank.enums.Status;
+import com.social.bank.socialbank.repository.AccountRepository;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,4 +37,22 @@ public class Account {
     @JsonManagedReference
     @ToString.Exclude
     private List<Moves> moveItemList;
+
+    public Account(String idenfifier, String name, String description, double balance, String status) {
+        this.idenfifier = idenfifier;
+        this.name = name;
+        this.description = description;
+        this.balance = balance;
+        this.status = Status.valueOf(status);
+    }
+
+    public static void create(CreateAccountRequest request, AccountRepository repository) {
+        repository.save(new Account(
+                request.getIdenfifier(),
+                request.getName(),
+                request.getDescription(),
+                0.0,
+                request.getStatus()
+        ));
+    }
 }

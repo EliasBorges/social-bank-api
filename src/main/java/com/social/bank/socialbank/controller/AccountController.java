@@ -10,6 +10,7 @@ import com.social.bank.socialbank.controller.request.account.moves.TransferAccou
 import com.social.bank.socialbank.controller.response.account.AccountResponse;
 import com.social.bank.socialbank.controller.response.account.ExtractAccountResponse;
 import com.social.bank.socialbank.controller.response.account.SaleAccountResponse;
+import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,11 +23,14 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(value = "/accounts")
 public class AccountController {
+    private static final Integer SIZE_MAX_PAGE = 100;
+
+    private final AccountService service;
 
     @ResponseStatus(CREATED)
     @PostMapping
     public void create(@Valid @RequestBody CreateAccountRequest request) {
-        return;
+        service.create(request);
     }
 
     @ResponseStatus(OK)
@@ -53,25 +57,37 @@ public class AccountController {
 
     @ResponseStatus(OK)
     @PutMapping(value = "/{idenfifier}")
-    public String update(@PathVariable String idenfifier, @Valid @RequestBody UpdateAccountRequest request) {
+    public String update(
+            @PathVariable String idenfifier,
+            @Valid @RequestBody UpdateAccountRequest request
+    ) {
         return null;
     }
 
     @ResponseStatus(OK)
     @PutMapping(value = "/{idenfifier}/deposits")
-    public String deposits(@PathVariable String idenfifier, @Valid @RequestBody DepositAccountRequest request) {
+    public String deposits(
+            @PathVariable String idenfifier,
+            @Valid @RequestBody DepositAccountRequest request
+    ) {
         return null;
     }
 
     @ResponseStatus(OK)
     @PutMapping(value = "/{idenfifier}/transfers")
-    public String transfer(@PathVariable String idenfifier, @Valid @RequestBody TransferAccountRequest request) {
+    public String transfer(
+            @PathVariable String idenfifier,
+            @Valid @RequestBody TransferAccountRequest request
+    ) {
         return null;
     }
 
     @ResponseStatus(OK)
     @PutMapping(value = "/{idenfifier}/payments")
-    public String payment(@PathVariable String idenfifier, @Valid @RequestBody PaymentAccountRequest request) {
+    public String payment(
+            @PathVariable String idenfifier,
+            @Valid @RequestBody PaymentAccountRequest request
+    ) {
         return null;
     }
 

@@ -23,5 +23,5 @@ public class CreateAccountRequest {
     private final String description;
 
     @NotBlank(message = "{validation.blank}")
-    private final Status status;
+    private final String status;
 }
