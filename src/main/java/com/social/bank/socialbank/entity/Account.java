@@ -21,10 +21,11 @@ public class Account {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
     @Column(nullable = false)
-    private Double amount;
+    private Double balance;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

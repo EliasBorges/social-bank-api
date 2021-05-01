@@ -33,13 +33,13 @@ public class Moves {
     @Column(nullable = true, name = "idenfifier_account_destiny")
     private String idenfifierAccountDestiny;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Type type;
+
     @ManyToOne
     @JoinColumn(name = "account_id", foreignKey = @ForeignKey(name = "FK_ID_ACCOUNT"))
     @JsonBackReference
     @ToString.Exclude
     private Account account;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Type type;
 }
