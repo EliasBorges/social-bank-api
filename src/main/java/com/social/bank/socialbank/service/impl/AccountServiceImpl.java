@@ -51,7 +51,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public SaleAccountResponse getSale(String idenfifier) {
-        return null;
+        return new SaleAccountResponse(repository.findById(idenfifier).map(Account::getBalance).orElseThrow(() -> {
+            log.error("Account not found, idenfifier customer = {} not found", idenfifier);
+
+            throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier customer = %s not found",
+                    idenfifier));
+        }));
     }
 
     @Override

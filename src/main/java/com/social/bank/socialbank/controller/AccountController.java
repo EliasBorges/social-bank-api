@@ -40,7 +40,7 @@ public class AccountController {
     @ResponseStatus(OK)
     @GetMapping(value = "/{idenfifier}/sales")
     public SaleAccountResponse getSale(@PathVariable String idenfifier) {
-        return new SaleAccountResponse();
+        return service.getSale(idenfifier);
     }
 
     @ResponseStatus(OK)
