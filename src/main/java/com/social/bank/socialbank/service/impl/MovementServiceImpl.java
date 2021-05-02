@@ -65,13 +65,28 @@ public class MovementServiceImpl implements MovementService {
         }
 
         accountOrign.removeBalance(request.getValue(), accountRepository);
-        Movement.addMovementTransfer(- request.getValue(), repository, accountOrign);
-
         accountDestiny.addBalance(request.getValue(), accountRepository);
+
+        Movement.addMovementTransfer(- request.getValue(), repository, accountOrign);
         Movement.addMovementTransfer(request.getValue(), repository, accountDestiny);
     }
 
     @Override
     public void payment(String idenfifier, PaymentAccountRequest request) {
+        Account account = accountRepository.findById(idenfifier).orElseThrow(() -> {
+            log.error("Unrealized payment, idenfifier account = {} not found", idenfifier);
+
+            throw new NotFoundException(format("MovementServiceImpl: payment, idenfifier account = %s not found", idenfifier));
+        });
+
+        if (account.getBalance() <= request.getValue()) {
+            log.error("Unrealized payment, idenfifier account = {} insufficient funds", idenfifier);
+
+            throw new InsufficienteFundsException(
+                    format("MovementServiceImpl: payment, idenfifier account = %s insufficient funds", idenfifier));
+        }
+
+        account.removeBalance(request.getValue(), accountRepository);
+        Movement.addMovementPayment(request, repository, account);
     }
 }

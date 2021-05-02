@@ -2,6 +2,7 @@ package com.social.bank.socialbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
+import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
 import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
 import com.social.bank.socialbank.enums.Type;
 import com.social.bank.socialbank.repository.MovementRepository;
@@ -9,6 +10,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -26,7 +28,7 @@ public class Movement {
     private String barCode;
 
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Column(nullable = false)
     private Double amount;
@@ -41,7 +43,7 @@ public class Movement {
     @ToString.Exclude
     private Account account;
 
-    public Movement(String idenfifier, LocalDate now, Double value, Type deposit, Account account) {
+    public Movement(String idenfifier, LocalDateTime now, Double value, Type deposit, Account account) {
         this.idenfifier = idenfifier;
         this.date = now;
         this.amount = value;
@@ -52,7 +54,7 @@ public class Movement {
     public static void addMovementDeposit(DepositAccountRequest request, MovementRepository repository, Account account){
         repository.save(new Movement(
                 UUID.randomUUID().toString(),
-                LocalDate.now(),
+                LocalDateTime.now(),
                 request.getValue(),
                 Type.DEPOSIT,
                 account
@@ -62,9 +64,20 @@ public class Movement {
     public static void addMovementTransfer(Double valueOperation, MovementRepository repository, Account account){
         repository.save(new Movement(
                 UUID.randomUUID().toString(),
-                LocalDate.now(),
+                LocalDateTime.now(),
                 valueOperation,
                 Type.TRANSFER,
+                account
+        ));
+    }
+
+    public static void addMovementPayment(PaymentAccountRequest request, MovementRepository repository, Account account){
+        repository.save(new Movement(
+                UUID.randomUUID().toString(),
+                request.getBarCode(),
+                request.getExpiration_date(),
+                request.getValue(),
+                Type.DEPOSIT,
                 account
         ));
     }

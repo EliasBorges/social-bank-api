@@ -57,5 +57,6 @@ public class MovementController {
             @PathVariable String idenfifier,
             @Valid @RequestBody PaymentAccountRequest request
     ) {
+        service.payment(idenfifier, request);
     }
 }
