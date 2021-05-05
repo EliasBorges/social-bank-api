@@ -1,15 +1,17 @@
 package com.social.bank.socialbank.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.social.bank.socialbank.controller.request.account.movement.DepositAccountRequest;
+import com.social.bank.socialbank.controller.request.account.movement.PaymentAccountRequest;
 import com.social.bank.socialbank.enums.Type;
 import com.social.bank.socialbank.repository.MovementRepository;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -27,8 +29,10 @@ public class Movement {
     @Column(nullable = true, name = "bar_code")
     private String barCode;
 
-    @Column(nullable = false)
-    private LocalDateTime date;
+    @Column(nullable = false, name = "expiration_date")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    private LocalDateTime expirationDate;
 
     @Column(nullable = false)
     private Double amount;
@@ -45,7 +49,7 @@ public class Movement {
 
     public Movement(String idenfifier, LocalDateTime now, Double value, Type deposit, Account account) {
         this.idenfifier = idenfifier;
-        this.date = now;
+        this.expirationDate = now;
         this.amount = value;
         this.type = deposit;
         this.account = account;
@@ -77,7 +81,7 @@ public class Movement {
                 request.getBarCode(),
                 request.getExpiration_date(),
                 request.getValue(),
-                Type.DEPOSIT,
+                Type.PAYMENT,
                 account
         ));
     }

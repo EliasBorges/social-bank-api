@@ -23,13 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
 
     public void create(CreateAccountRequest request) {
-        if (repository.existsById(request.getIdenfifier())) {
-            log.error("Account not created, idenfifier account = {} register", request.getIdenfifier());
-
-            throw new DocumentAlreadyExistsException(
-                    format("AccountServiceImpl: create, identifier account = %s register",
-                            request.getIdenfifier()));
-        }
+        validAccoutExists(request);
 
         log.info("Create account = {}", request);
         Account.create(request, repository);
@@ -75,14 +69,31 @@ public class AccountServiceImpl implements AccountService {
             throw new NotFoundException(format("AccountServiceImpl: update status, idenfifier account = %s not found", idenfifier));
         });
 
-        if(account.getBalance() < 0) {
-            log.error("Account not update status balance pending, idenfifier account = {}, balance {}", idenfifier, account.getBalance());
-
-            throw new BalanceNegativeException(format("AccountServiceImpl: update status, idenfifier account = %s balance pending", idenfifier));
-        }
+        validFoundNegative(account);
 
         log.info("Update status account, idenfifier = {}", idenfifier);
 
         account.canceled(account, repository);
+    }
+
+    public void validFoundNegative(Account account) {
+        if (account.getBalance() < 0) {
+            log.error("Account not update status balance pending, idenfifier account = {}, balance {}",
+                    account.getIdenfifier(),
+                    account.getBalance());
+
+            throw new BalanceNegativeException(format("AccountServiceImpl: update status, idenfifier account = %s balance pending",
+                    account.getIdenfifier()));
+        }
+    }
+
+    public void validAccoutExists(CreateAccountRequest request) {
+        if (repository.existsById(request.getIdenfifier())) {
+            log.error("Account not created, idenfifier account = {} register", request.getIdenfifier());
+
+            throw new DocumentAlreadyExistsException(
+                    format("AccountServiceImpl: create, identifier account = %s register",
+                            request.getIdenfifier()));
+        }
     }
 }

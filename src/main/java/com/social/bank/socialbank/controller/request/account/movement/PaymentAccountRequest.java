@@ -1,4 +1,4 @@
-package com.social.bank.socialbank.controller.request.account.moves;
+package com.social.bank.socialbank.controller.request.account.movement;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter

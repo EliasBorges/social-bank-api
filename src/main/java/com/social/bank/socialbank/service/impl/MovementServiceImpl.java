@@ -1,11 +1,12 @@
 package com.social.bank.socialbank.service.impl;
 
-import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
-import com.social.bank.socialbank.controller.response.movement.ExtractAccountResponse;
+import com.social.bank.socialbank.controller.request.account.movement.DepositAccountRequest;
+import com.social.bank.socialbank.controller.request.account.movement.PaymentAccountRequest;
+import com.social.bank.socialbank.controller.request.account.movement.TransferAccountRequest;
 import com.social.bank.socialbank.entity.Account;
 import com.social.bank.socialbank.entity.Movement;
+import com.social.bank.socialbank.enums.Status;
+import com.social.bank.socialbank.exceptions.AccountCanceledException;
 import com.social.bank.socialbank.exceptions.InsufficienteFundsException;
 import com.social.bank.socialbank.exceptions.NotFoundException;
 import com.social.bank.socialbank.repository.AccountRepository;
@@ -28,8 +29,8 @@ public class MovementServiceImpl implements MovementService {
     private final AccountRepository accountRepository;
 
     @Override
-    public Page<ExtractAccountResponse> getExtract(String idenfifier, Pageable pag) {
-        return null;
+    public Page<Movement> getExtract(String idenfifier, Pageable page) {
+        return repository.findAllByAccount(idenfifier, page);
     }
 
     public void deposits(String idenfifier, DepositAccountRequest request) {
@@ -38,6 +39,8 @@ public class MovementServiceImpl implements MovementService {
 
             throw new NotFoundException(format("MovementServiceImpl: deposit, idenfifier account = %s not found", idenfifier));
         });
+
+        validAccountActive(account);
 
         account.deposit(request, accountRepository);
 
@@ -57,21 +60,18 @@ public class MovementServiceImpl implements MovementService {
             throw new NotFoundException(format("MovementServiceImpl: transfer, idenfifier account destiny = %s not found", idenfifier));
         });
 
-        if (accountOrign.getBalance() <= request.getValue()) {
-            log.error("Unrealized transfer, idenfifier account destiny = {} insufficient funds", idenfifier);
+        validAccountActive(accountOrign);
+        validAccountActive(accountDestiny);
 
-            throw new InsufficienteFundsException(
-                    format("MovementServiceImpl: transfer, idenfifier account destiny = %s insufficient funds", idenfifier));
-        }
+        validAccountFunds(accountOrign, request.getValue());
 
         accountOrign.removeBalance(request.getValue(), accountRepository);
         accountDestiny.addBalance(request.getValue(), accountRepository);
 
-        Movement.addMovementTransfer(- request.getValue(), repository, accountOrign);
+        Movement.addMovementTransfer(-request.getValue(), repository, accountOrign);
         Movement.addMovementTransfer(request.getValue(), repository, accountDestiny);
     }
 
-    @Override
     public void payment(String idenfifier, PaymentAccountRequest request) {
         Account account = accountRepository.findById(idenfifier).orElseThrow(() -> {
             log.error("Unrealized payment, idenfifier account = {} not found", idenfifier);
@@ -79,14 +79,33 @@ public class MovementServiceImpl implements MovementService {
             throw new NotFoundException(format("MovementServiceImpl: payment, idenfifier account = %s not found", idenfifier));
         });
 
-        if (account.getBalance() <= request.getValue()) {
-            log.error("Unrealized payment, idenfifier account = {} insufficient funds", idenfifier);
+        validAccountActive(account);
 
-            throw new InsufficienteFundsException(
-                    format("MovementServiceImpl: payment, idenfifier account = %s insufficient funds", idenfifier));
-        }
+        validAccountFunds(account, request.getValue());
 
         account.removeBalance(request.getValue(), accountRepository);
         Movement.addMovementPayment(request, repository, account);
+    }
+
+    public void validAccountFunds(Account accountOrign, Double value) {
+        if (accountOrign.getBalance() <= value) {
+            log.error("Unrealized transfer, idenfifier account destiny = {} insufficient funds",
+                    accountOrign.getIdenfifier());
+
+            throw new InsufficienteFundsException(
+                    format("MovementServiceImpl: transfer, idenfifier account destiny = %s insufficient funds",
+                            accountOrign.getIdenfifier()));
+        }
+    }
+
+    public void validAccountActive(Account account) {
+        if (account.getStatus() == Status.CANCELED) {
+            log.error("Unrealized movement, account = {} status canceled",
+                    account);
+
+            throw new AccountCanceledException(
+                    format("MovementServiceImpl: movement, idenfifier account = %s insufficient funds",
+                            account));
+        }
     }
 }

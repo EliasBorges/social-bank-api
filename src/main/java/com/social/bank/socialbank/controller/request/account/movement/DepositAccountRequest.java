@@ -1,4 +1,4 @@
-package com.social.bank.socialbank.controller.request.account.moves;
+package com.social.bank.socialbank.controller.request.account.movement;
 
 import lombok.*;
 

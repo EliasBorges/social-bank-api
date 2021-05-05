@@ -1,9 +1,10 @@
 package com.social.bank.socialbank.controller;
 
-import com.social.bank.socialbank.controller.request.account.moves.DepositAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.PaymentAccountRequest;
-import com.social.bank.socialbank.controller.request.account.moves.TransferAccountRequest;
+import com.social.bank.socialbank.controller.request.account.movement.DepositAccountRequest;
+import com.social.bank.socialbank.controller.request.account.movement.PaymentAccountRequest;
+import com.social.bank.socialbank.controller.request.account.movement.TransferAccountRequest;
 import com.social.bank.socialbank.controller.response.movement.ExtractAccountResponse;
+import com.social.bank.socialbank.entity.Movement;
 import com.social.bank.socialbank.service.MovementService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,10 +27,12 @@ public class MovementController {
 
     @ResponseStatus(OK)
     @GetMapping(value = "/{idenfifier}/extracts")
-    public Page<ExtractAccountResponse> getExtract(
+    public Page<Movement> getExtract(
             @PathVariable String idenfifier,
-            @PageableDefault(sort = "name", direction = ASC, size = 20) Pageable pag
+            @PageableDefault(sort = "name", direction = ASC, size = 20) Pageable page
     ) {
+       // return service.getExtract(idenfifier, page).map(ExtractAccountResponse::fromExtract);
+       // return service.getExtract(idenfifier, page);
         return null;
     }
 

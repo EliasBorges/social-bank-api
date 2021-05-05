@@ -16,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 @Slf4j
@@ -82,6 +80,14 @@ public class GlobalExceptionHandler {
     public @ResponseBody
     ErrorResponse handlerBusinessRules(InsufficienteFundsException exception) {
         log.info(exception.getMessage());
-        return new ErrorResponse(env.getProperty("account.insufficiente.funds"));
+        return new ErrorResponse(env.getProperty("validation.account.insufficiente.funds"));
+    }
+
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({AccountCanceledException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(AccountCanceledException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.account.canceled"));
     }
 }
