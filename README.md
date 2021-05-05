@@ -98,7 +98,8 @@ Segue abaixo um exemplo de resposta.
 * [Hibernate Validator](https://hibernate.org/validator/)
 
 ### MELHORIAS
-
+- Realização de testes únitarios; 
+- Revisar e refatorar projeto.
 
 #### AUTOR
 
