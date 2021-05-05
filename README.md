@@ -99,7 +99,7 @@ Segue abaixo um exemplo de resposta.
 * [Docker](https://www.docker.com/)
 
 ### MELHORIAS
-- Realização de testes únitarios; 
+- Realização de testes unitários; 
 - Revisar e refatorar projeto.
 
 #### AUTOR
