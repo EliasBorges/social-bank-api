@@ -96,6 +96,7 @@ Segue abaixo um exemplo de resposta.
 * [Spring Boot DevTools](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools)
 * [Swagger](https://swagger.io/)
 * [Hibernate Validator](https://hibernate.org/validator/)
+* [Docker](https://www.docker.com/)
 
 ### MELHORIAS
 - Realização de testes únitarios; 
