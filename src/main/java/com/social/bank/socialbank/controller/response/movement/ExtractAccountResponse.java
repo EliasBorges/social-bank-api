@@ -5,14 +5,26 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExtractAccountResponse {
-    private String idenfifier;
-    private String name;
     private List<Movement> movementItemList;
-    private Double balance;
+
+/*    public static List<ExtractAccountResponse>  fromExtract(Movement movement) {
+
+        List<ExtractAccountResponse> movementItemList = ArrayList<>();
+
+        movementItemList.add(Movement(
+                movement.getIdenfifier(),
+                movement.getBarCode(),
+                movement.getDate(),
+                movement.getType(),
+                movement.getAmount()))
+
+        return movementItemList;
+    }*/
 }

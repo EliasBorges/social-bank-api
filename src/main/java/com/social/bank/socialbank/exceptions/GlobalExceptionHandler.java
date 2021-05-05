@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 @Slf4j
@@ -44,14 +41,10 @@ public class GlobalExceptionHandler {
             if (nonNull(error.getCodes()) && nonNull(error.getCodes()[STR_FIELD_NAME])) {
                 String fieldName = error.getCodes()[STR_FIELD_NAME];
 
-                StringBuilder messageDisplayed = new StringBuilder();
-                messageDisplayed.append("[");
-                messageDisplayed
-                        .append(fieldName.substring(fieldName.lastIndexOf(".") + IGNORE_DOT_POST).toUpperCase());
-                messageDisplayed.append("] - ");
-                messageDisplayed.append(error.getDefaultMessage());
-
-                validationErrors.add(new ErrorResponse(messageDisplayed.toString()));
+                validationErrors.add(new ErrorResponse("[" +
+                        fieldName.substring(fieldName.lastIndexOf(".") + IGNORE_DOT_POST).toUpperCase() +
+                        "] - " +
+                        error.getDefaultMessage()));
             }
         }
 
@@ -80,5 +73,29 @@ public class GlobalExceptionHandler {
     ErrorResponse handlerBusinessRules(NotFoundException exception) {
         log.info(exception.getMessage());
         return new ErrorResponse(env.getProperty("validation.not.found"));
+    }
+
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({InsufficienteFundsException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(InsufficienteFundsException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.account.insufficiente.funds"));
+    }
+
+    @ResponseStatus(UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({AccountCanceledException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(AccountCanceledException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.account.canceled"));
+    }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler({PaginationSizeLimitExceededException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(PaginationSizeLimitExceededException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.pagination.size.limit.exceeded"));
     }
 }
