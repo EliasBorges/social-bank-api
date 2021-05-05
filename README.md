@@ -22,7 +22,9 @@
     "status": "ACTIVE",
 }
 ```
-- **GET:** `{host}/accounts/extracts{idenfifier}` - Neste endpoint é possivel realizar a consulta de transações de uma conta pelo idenfifier. Segue abaixo um exemplo de resposta.
+- **GET:** `{host}/accounts/extracts/{idenfifier}?sort=name&direction=ASC&size=50` - Neste endpoint é possivel realizar a consulta de transações de uma conta pelo idenfifier.
+Lembrando que caso não seja enviado os parametros (sort, direction e size) o paramentro será padrão, tendo um limite de exibir no maximo 100 páginas.
+Segue abaixo um exemplo de resposta.
 ```
 {
     "idenfifier": "1010",
@@ -82,6 +84,10 @@
     "value":6.12
 }
 ```
+#### UML DO PROJETO
+![UML](https://user-images.githubusercontent.com/31020103/117090151-f1651800-ad2d-11eb-96bd-e99193c94998.png)
+
+
 #### PRINCIPAIS BIBLIOTECAS UTILIZADAS PARA EXECUÇÃO DO PROJETO:
 
 * [MySQL Connector/J](https://mvnrepository.com/artifact/mysql/mysql-connector-java)
