@@ -21,20 +21,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping(value = "/movements")
 public class MovementController {
-    private static final Integer SIZE_MAX_PAGE = 100;
-
     private final MovementService service;
-
-    @ResponseStatus(OK)
-    @GetMapping(value = "/{idenfifier}/extracts")
-    public Page<Movement> getExtract(
-            @PathVariable String idenfifier,
-            @PageableDefault(sort = "name", direction = ASC, size = 20) Pageable page
-    ) {
-       // return service.getExtract(idenfifier, page).map(ExtractAccountResponse::fromExtract);
-       // return service.getExtract(idenfifier, page);
-        return null;
-    }
 
     @ResponseStatus(OK)
     @PutMapping(value = "/deposits/accounts/{idenfifier}")

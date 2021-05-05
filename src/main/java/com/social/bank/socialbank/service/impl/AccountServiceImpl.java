@@ -11,6 +11,8 @@ import com.social.bank.socialbank.repository.AccountRepository;
 import com.social.bank.socialbank.service.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import static java.lang.String.format;
@@ -36,6 +38,10 @@ public class AccountServiceImpl implements AccountService {
             throw new NotFoundException(format("AccountServiceImpl: findById, idenfifier account = %s not found",
                     idenfifier));
         });
+    }
+
+    public Page<Account> getExtract(String idenfifier, Pageable page) {
+        return repository.findAllByIdenfifier(idenfifier, page);
     }
 
     public BalenceAccountResponse getBalance(String idenfifier) {

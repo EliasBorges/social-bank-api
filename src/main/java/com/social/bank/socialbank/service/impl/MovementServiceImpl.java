@@ -14,8 +14,6 @@ import com.social.bank.socialbank.repository.MovementRepository;
 import com.social.bank.socialbank.service.MovementService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import static java.lang.String.format;
@@ -27,11 +25,6 @@ public class MovementServiceImpl implements MovementService {
     private final MovementRepository repository;
 
     private final AccountRepository accountRepository;
-
-    @Override
-    public Page<Movement> getExtract(String idenfifier, Pageable page) {
-        return repository.findAllByAccount(idenfifier, page);
-    }
 
     public void deposits(String idenfifier, DepositAccountRequest request) {
         Account account = accountRepository.findById(idenfifier).orElseThrow(() -> {

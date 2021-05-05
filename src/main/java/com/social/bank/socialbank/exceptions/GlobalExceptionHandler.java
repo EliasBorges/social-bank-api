@@ -90,4 +90,12 @@ public class GlobalExceptionHandler {
         log.info(exception.getMessage());
         return new ErrorResponse(env.getProperty("validation.account.canceled"));
     }
+
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler({PaginationSizeLimitExceededException.class})
+    public @ResponseBody
+    ErrorResponse handlerBusinessRules(PaginationSizeLimitExceededException exception) {
+        log.info(exception.getMessage());
+        return new ErrorResponse(env.getProperty("validation.pagination.size.limit.exceeded"));
+    }
 }
